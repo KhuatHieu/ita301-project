@@ -370,7 +370,8 @@ public class _BaseDAO<T> {
                     Object value = field.get(model);
 
                     if (value != null) {
-                        columns.append(field.getName()).append(", ");
+                        columns.append(camelToSnake(field.getName()))
+                                .append(", ");
                         placeholders.append("?, ");
                         params.add(String.valueOf(value));
                     }
@@ -404,7 +405,8 @@ public class _BaseDAO<T> {
                     field.setAccessible(true);
                     Object value = field.get(model);
                     if (value != null) {
-                        updateSet.append(field.getName()).append(" = ?, ");
+                        updateSet.append(camelToSnake(field.getName()))
+                                .append(" = ?, ");
                         params.add(String.valueOf(value));
                     }
                 }
