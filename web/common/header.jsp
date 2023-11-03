@@ -1,12 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- Global variables -->
-<c:set var="Role.ROLE_ADMIN" value="Role.ROLE_ADMIN" scope="page" />
-<c:set var="Role.ROLE_TEACHER" value="Role.ROLE_TEACHER" scope="page" />
-<c:set var="Role.ROLE_TEAM_LEADER" value="Role.ROLE_TEAM_LEADER" scope="page" />
-<c:set var="Role.ROLE_STUDENT" value="Role.ROLE_STUDENT" scope="page" />
-
 <!-- Bootstrap css -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 
