@@ -123,7 +123,7 @@ public class _BaseDAO<T> {
     }
 
     private String getStrictColName(String col) {
-        if (col.charAt(0) != '`') {
+        if (col.charAt(0) != '[') {
             col = strictTableName + "." + col;
         }
         return col;
@@ -357,7 +357,7 @@ public class _BaseDAO<T> {
             return null;
         }
     }
-    
+
     protected ArrayList<T> getAll() {
         return this.selects().exec();
     }
