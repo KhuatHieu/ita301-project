@@ -321,25 +321,43 @@ public class _BaseDAO<T> {
         return this;
     }
 
-    protected ArrayList<T> get() {
-        return this.selects().exec();
-    }
-
     protected T get(int id) {
-        return this.getAll(this.getFieldNameAtIndex(1), String.valueOf(id))
-                .get(0);
+        try {
+            return this.getAll(this.getFieldNameAtIndex(1), String.valueOf(id))
+                    .get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     protected T get(String col, String val) {
-        return this.getAll(col, val)
-                .get(0);
+        try {
+            return this.getAll(col, val)
+                    .get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     protected T get(String col, String op, String val) {
-        return this.getAll(col, op, val)
-                .get(0);
+        try {
+            return this.getAll(col, op, val)
+                    .get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
+    protected T get(_BaseDAO b) {
+        try {
+            this.statement = b.statement;
+            this.params = b.params;
+            return this.getAll().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+    
     protected ArrayList<T> getAll() {
         return this.selects().exec();
     }
@@ -354,6 +372,13 @@ public class _BaseDAO<T> {
         return this.selects()
                 .where(col, op, val)
                 .exec();
+    }
+
+    protected ArrayList<T> getAll(_BaseDAO b) {
+        this.statement = b.statement;
+        this.params = b.params;
+
+        return this.exec();
     }
 
     private _BaseDAO create(T model) {
@@ -431,8 +456,7 @@ public class _BaseDAO<T> {
             Field[] fields = getFields();
             fields[0].setAccessible(true);
 
-            int id = (int) fields[0].get(model);
-            if (id == 0) {
+            if ((int) fields[0].get(model) == 0) {
                 return this.create(model);
             } else {
                 return this.update(model);
@@ -494,16 +518,6 @@ public class _BaseDAO<T> {
         } catch (SQLException ex) {
             Logger.getLogger(_BaseDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private String getStatement() {
-        return this.statement;
-    }
-
-    protected _BaseDAO createStatement(_BaseDAO b) {
-        this.statement = b.getStatement();
-
-        return this;
     }
 
     protected _BaseDAO raw(String rawStmt) {
