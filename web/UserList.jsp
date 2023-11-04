@@ -108,6 +108,7 @@
             <a class="nav-link" href="user">User</a>
             <a class="nav-link" href="#">Project</a>
             <a class="nav-link" href="#">Todos</a>
+            <a class="nav-link active" href="Login" style="margin-left: 1500px">Logout</a>
         </nav>
 
 
@@ -166,7 +167,7 @@
             </div>
         </div>
         <script>
-            function doFunc() {                
+            function doFunc() {
                 var firstName = $('#firstName').val();
                 var lastname = $('#lastName').val();
                 var email = $('#email').val();

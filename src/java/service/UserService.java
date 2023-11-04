@@ -22,7 +22,7 @@ public class UserService {
         String password = request.getParameter("password");
         User u = udao.getUser(username, password);
         if(u == null){
-            String mess = "login sai cu roi ";
+            String mess = "Login Failed! ";
             request.setAttribute("mess", mess);
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }else{

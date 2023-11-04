@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <h3 style="color: ">${mess}</h3>
+                <h3 style="color:red ">${mess}</h3>
 
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
