@@ -1,5 +1,6 @@
 package dao;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import model.User;
 
@@ -28,9 +29,10 @@ public class UserDAO extends _BaseDAO<User> {
     public void deleteUserAccount(User u){
         
     }
-
-    public static void main(String[] args) {
-        UserDAO udao = new UserDAO();
-        System.out.println(udao.getUserById(1));
-    }
+    public User getUser(String username, String password) {
+        return get(selects()
+                .where("username", username)
+                .andWhere("password", password)
+        );
+    } 
 }

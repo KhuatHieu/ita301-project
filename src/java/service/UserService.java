@@ -2,6 +2,7 @@ package service;
 
 import com.google.gson.Gson;
 import dao.UserDAO;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,6 +16,18 @@ public class UserService {
     public ArrayList<User> getUserList() {
         ArrayList<User> userList = udao.getUserList();
         return userList;
+    }
+    public void login (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        User u = udao.getUser(username, password);
+        if(u == null){
+            String mess = "login sai cu roi ";
+            request.setAttribute("mess", mess);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }else{
+            response.sendRedirect("user");
+        }
     }
 
     public void createUserAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
