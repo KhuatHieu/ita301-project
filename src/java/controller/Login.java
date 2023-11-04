@@ -32,6 +32,5 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         UserService us = new UserService();
         us.login(request, response);
-        
     }
 }

@@ -60,6 +60,32 @@ public class UserService {
         response.setContentType("text/plain");
         response.getWriter().write(json);
     }
+    public void registerAccount(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+        User u = new User();
+        ArrayList<User> userList = udao.getUserList();
+        String email = request.getParameter("email");
+        
+        boolean flag = true;
+        for (User user : userList) {
+            if (user.getEmail().equals(email)) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag == false) {
+            String mess = "Email da co ";
+            request.setAttribute("mess", mess);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+        } else {
+            u.setFirstName(request.getParameter("firstname"));
+            u.setLastName(request.getParameter("lastname"));
+            u.setEmail(request.getParameter("email"));
+            u.setUsername(request.getParameter("users"));
+            u.setPassword(request.getParameter("password"));
+            udao.createUserAccount(u);
+            response.sendRedirect("user");
+        }
+    }
 
     public void updateUserAccount(HttpServletRequest request, HttpServletResponse response) {
         int userId = Integer.parseInt(request.getParameter("userId"));
