@@ -1,8 +1,10 @@
 package service;
 
+import com.google.gson.Gson;
 import dao.UserDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import model.User;
 
@@ -15,10 +17,35 @@ public class UserService {
         return userList;
     }
 
-    public void createUserAccount(HttpServletRequest request, HttpServletResponse response) {
+    public void createUserAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User u = new User();
-        u.setEmail(request.getParameter("email"));
-        udao.createUserAccount(u);
+        ArrayList<User> userList = udao.getUserList();
+        String email = request.getParameter("email");
+        String data = null;
+        boolean flag = true;
+        for (User user : userList) {
+            if (user.getEmail().equals(email)) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag == false) {
+            data = "This email is existed!";
+            response.setStatus(406);
+        } else {
+            u.setFirstName(request.getParameter("firstName"));
+            u.setLastName(request.getParameter("lastName"));
+            u.setEmail(request.getParameter("email"));
+            u.setUsername(request.getParameter("userName"));
+            u.setPassword(request.getParameter("password"));
+            udao.createUserAccount(u);
+            data = "user";
+            response.setStatus(200);
+        }
+
+        String json = new Gson().toJson(data);
+        response.setContentType("text/plain");
+        response.getWriter().write(json);
     }
 
     public void updateUserAccount(HttpServletRequest request, HttpServletResponse response) {

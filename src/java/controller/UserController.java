@@ -30,11 +30,12 @@ public class UserController extends HttpServlet {
                 break;
             case "updateUser":
                 us.updateUserAccount(request, response);
+                response.sendRedirect("user");
                 break;
             case "viewUserProfile":
                 request.setAttribute("user", us.getUserById(request, response));
                 request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
-                break;          
+                break;
         }
 
     }
