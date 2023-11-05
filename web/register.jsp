@@ -17,7 +17,7 @@
     <body>
         <%@include file="Component/navbar.jsp" %>
         <section class="h-100 h-custom gradient-custom-2">
-            <form action="Register" method="post">
+            <form action="register" method="post">
                 <div class="container py-5 h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col-12">

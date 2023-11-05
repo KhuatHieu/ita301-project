@@ -17,16 +17,22 @@ public class UserService {
         ArrayList<User> userList = udao.getUserList();
         return userList;
     }
-    public void login (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+    public ArrayList<User> getUsersOfProject(int projectId) {
+        return udao.getUsersOfProject(projectId);
+    }
+    
+    public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         User u = udao.getUser(username, password);
-        if(u == null){
+        if (u == null) {
             String mess = "Login Failed! ";
             request.setAttribute("mess", mess);
             request.getRequestDispatcher("login.jsp").forward(request, response);
-        }else{
-            response.sendRedirect("user");
+        } else {
+            request.getSession().setAttribute("user", u);
+            response.sendRedirect("./");
         }
     }
 
@@ -60,11 +66,12 @@ public class UserService {
         response.setContentType("text/plain");
         response.getWriter().write(json);
     }
-    public void registerAccount(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+
+    public void registerAccount(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User u = new User();
         ArrayList<User> userList = udao.getUserList();
         String email = request.getParameter("email");
-        
+
         boolean flag = true;
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
@@ -83,7 +90,7 @@ public class UserService {
             u.setUsername(request.getParameter("users"));
             u.setPassword(request.getParameter("password"));
             udao.createUserAccount(u);
-            response.sendRedirect("user");
+            response.sendRedirect("./login");
         }
     }
 
@@ -104,5 +111,4 @@ public class UserService {
         int user_id = Integer.parseInt(request.getParameter("user_id"));
         return udao.getUserById(user_id);
     }
-
 }

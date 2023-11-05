@@ -10,7 +10,7 @@
     <body>
         <%@include file="Component/navbar.jsp" %>
         <div class="container" style="margin-top:200px ">
-            <form method="post" action="Login">
+            <form method="post" action="login">
                 
                 <div class="text-center">
                     <h1>Login</h1>
@@ -24,7 +24,7 @@
 
                 <!-- Password input -->
                 <div class="form-floating mb-4">
-                    <input minlength="6" type="password" class="form-control" id="floatingPassword" name="password">
+                    <input type="password" class="form-control" id="floatingPassword" name="password">
                     <label for="floatingPassword">Password</label>
                 </div>
                 <!-- 2 column grid layout for inline styling -->
@@ -44,7 +44,7 @@
 
                 <!-- Register buttons -->
                 <div class="text-center">
-                    <p>Not a member? <a href="register.jsp">Register</a></p>
+                    <p>Not a member? <a href="./register">Register</a></p>
                     <p>or sign up with:</p>
                     <button type="button" class="btn btn-link btn-floating mx-1">
                         <i class="fab fa-facebook-f"></i>

@@ -102,15 +102,8 @@
 
 
     </head>
-    <body>
-        <nav class="nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="user">User</a>
-            <a class="nav-link" href="#">Project</a>
-            <a class="nav-link" href="#">Todos</a>
-            <a class="nav-link active" href="Login" style="margin-left: 1500px">Logout</a>
-        </nav>
-
+    <body style="background-color: #F0F2F5;">
+        <%@include file="common/navbar.jsp" %>
 
         <button type="button" class="btn btn-success ml-auto" style="margin-left: 1400px;margin-top: 20px" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Create User Account

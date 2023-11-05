@@ -10,9 +10,9 @@
     <%@include file="common/navbar.jsp" %>
 </head>
 
-<body>
+<body style="background-color: #F0F2F5;">
     <div class="ms-4 m-3">
-        This is homepage đây alf alnding page
+        <h1>Homepage</h1>
     </div>
 
     <%@include file="common/footer.jsp" %>

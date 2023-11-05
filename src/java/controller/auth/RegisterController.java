@@ -2,8 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
-
+package controller.auth;
 
 import dao.UserDAO;
 import java.io.IOException;
@@ -17,20 +16,19 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import service.UserService;
 
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
-
-public class Login extends HttpServlet {
+@WebServlet(name = "Register", urlPatterns = {"/register"})
+public class RegisterController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("register.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UserService us = new UserService();
-        us.login(request, response);
+        us.registerAccount(request, response);
     }
 }

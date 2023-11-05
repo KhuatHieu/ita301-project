@@ -18,7 +18,6 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         request.setAttribute("userList", us.getUserList());
         request.getRequestDispatcher("UserList.jsp").forward(request, response);
-
     }
 
     @Override
@@ -30,7 +29,7 @@ public class UserController extends HttpServlet {
                 break;
             case "updateUser":
                 us.updateUserAccount(request, response);
-                response.sendRedirect("user");
+                response.sendRedirect("./");
                 break;
             case "viewUserProfile":
                 request.setAttribute("user", us.getUserById(request, response));

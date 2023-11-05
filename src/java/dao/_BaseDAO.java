@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class _BaseDAO<T> {
     private void initConnection() {
         Properties properties = new Properties();
 
+        // properties file saved at C:program files/apache/tomcat/bin/_env.properties
         File file = new File(DB_CONFIG_FILE);
         if (!file.exists()) {
             try ( FileOutputStream output = new FileOutputStream(DB_CONFIG_FILE)) {
@@ -51,6 +53,7 @@ public class _BaseDAO<T> {
                 properties.setProperty("username", "");
                 properties.setProperty("password", "");
                 properties.store(output, "JDBC Database Configurations");
+                throw new Exception("Please config database connection at 'C:program files/apache/tomcat/bin/_env.properties'.");
             } catch (Exception ex) {
                 Logger.getLogger(_BaseDAO.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
@@ -72,7 +75,7 @@ public class _BaseDAO<T> {
                 || name.isEmpty() || username.isEmpty()
                 || password.isEmpty()) {
             try {
-                throw new Exception("Invalid connection properties. Please reconfigure at '_env.properties' file.");
+                throw new Exception("Invalid connection properties. Please reconfigure at 'C:program files/apache/tomcat/bin/_env.properties'.");
             } catch (Exception ex) {
                 Logger.getLogger(_BaseDAO.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
@@ -506,7 +509,8 @@ public class _BaseDAO<T> {
 
     private void _prepStmt(boolean isClearAfterPrep) {
         try {
-            _currPrepStmt = connection.prepareStatement(statement);
+            _currPrepStmt = connection.prepareStatement(statement, 
+                    Statement.RETURN_GENERATED_KEYS);
             for (int i = 1; i <= params.size(); i++) {
                 _currPrepStmt.setString(i, String.valueOf(params.get(i - 1)));
             }
@@ -529,10 +533,10 @@ public class _BaseDAO<T> {
     protected _BaseDAO raw(String rawStmt, T... rawVal) {
         this.statement = rawStmt + "\n";
 
-        return this.setRawVal(rawVal);
+        return this.setRawValues(rawVal);
     }
 
-    protected _BaseDAO setRawVal(T... val) {
+    protected _BaseDAO setRawValues(T... val) {
         for (T t : val) {
             this.params.add(String.valueOf(t));
         }
@@ -550,6 +554,12 @@ public class _BaseDAO<T> {
         return this;
     }
 
+    int generatedKeys = 0;
+
+    protected int getGeneratedKeys() {
+        return this.generatedKeys;
+    }
+
     protected ArrayList<T> exec() {
         ArrayList<T> resultList = new ArrayList<>();
 
@@ -561,6 +571,10 @@ public class _BaseDAO<T> {
                     T model = mapResultSetToModel(rs);
                     resultList.add(model);
                 }
+            } else {
+                ResultSet rs = _currPrepStmt.getGeneratedKeys();
+                rs.next();
+                generatedKeys = rs.getInt(1);
             }
 
         } catch (SQLException ex) {
@@ -570,7 +584,7 @@ public class _BaseDAO<T> {
         return resultList;
     }
 
-    protected ResultSet execSql() {
+    protected ResultSet execRaw() {
         this._prepStmt(true);
         try {
             if (_currPrepStmt.execute() == true) {
@@ -582,13 +596,9 @@ public class _BaseDAO<T> {
         return null;
     }
 
-    protected ResultSet execRaw() {
-        return this.execSql();
-    }
-
     protected void printResultSet() {
         try {
-            ResultSet rs = this.execSql();
+            ResultSet rs = this.execRaw();
             if (rs == null) {
                 return;
             }
@@ -621,8 +631,7 @@ public class _BaseDAO<T> {
                 System.out.println();
             }
 
-            System.out.println("\n" + ((itemsPerPage == -1)
-                    ? "-> Showing all items"
+            System.out.println("\n" + ((itemsPerPage == -1) ? "-> Showing all items"
                     : ("-> Paginated " + itemsPerPage + " items per page.")
                     + "\n-> Showing all items in page " + page)
                     + "."

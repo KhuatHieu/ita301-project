@@ -83,13 +83,9 @@
             }
         </style>
     </head>
-    <body>
-        <nav class="nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="user">User</a>
-            <a class="nav-link" href="#">Project</a>
-            <a class="nav-link" href="#">Todos</a>
-        </nav>
+    <body style="background-color: #F0F2F5;">
+        <%@include file="common/navbar.jsp" %>
+
         <section class="vh-100" style="background-color: #f4f5f7;">
             <form action="user" method="post" onsubmit="return checkValidate()">
                 <div class="container py-5 h-100">
